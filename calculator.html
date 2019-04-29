@@ -14,11 +14,10 @@
   <style>
     body {
       background: rgb(235, 209, 177);
-      /* background: #555555; */
     }
 
     #main-part {
-      width: 350px;
+      width: 380px;
       height: 430px;
       border-radius: 5px;
     }
@@ -29,13 +28,28 @@
       margin: 0 auto;
     }
 
-    #show {
+    #result {
       width: 330px;
       height: 60px;
       /* border:rgb(150, 142, 142) 1.5px outset; */
       background: rgb(201, 198, 165);
       margin: 50px 0 15px 0;
-      padding-right: 8px; 
+      padding-right: 8px;
+    }
+
+    #note {
+      width: 300px;
+      height: 200px;
+      background: #fff;
+      margin: 20px 20px;
+    }
+
+    #sol {
+      width: 100%;
+      height: 100%;
+      font-size: 20px;
+      padding: 5px 10px;
+      background: #fff;
     }
 
     button {
@@ -52,33 +66,24 @@
       width: auto;
     }
 
-    @media only screen and (max-width: 769px) {
-      #top {
-        width: 300px;
-      }
-
-      #show {
-        width: 300px;
-      }
-    }
   </style>
 </head>
 
 <body>
   <div class="container">
     <div class="row justify-content-center">
-      <div id="main-part" class="col-md-4 bg-light text-center">
+      <div id="main-part" class="bg-light text-center">
         <table class="table table-borderless">
           <thead>
             <tr>
               <div id="top">
-                <input type="text" name="show" id="show" class="text-right h4" value="0" readonly>
+                <input type="text" id="result" class="text-right h2" value="0" readonly>
               </div>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <th><button type="button" class="btn btn-secondary mx-2">
+              <th><button type="button" class="btn btn-secondary mx-2" id="clear">
                   <h4>C</h4>
                 </button></th>
               <th><button type="button" class="btn btn-secondary mx-2">
@@ -144,12 +149,17 @@
               <th><button type="button" class="btn btn-secondary mx-2">
                   <h4>.</h4>
                 </button></th>
-              <th><button type="button" class="btn btn-secondary mx-2">
+              <th><button type="button" class="btn btn-secondary mx-2" id="cal">
                   <h4>=</h4>
                 </button></th>
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div id="note">
+        <!-- <input type="text" id="sol" class="h4" readonly> -->
+        <textarea class="form-control" id="sol" rows="3" readonly></textarea>
       </div>
     </div>
   </div>
@@ -166,6 +176,38 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
   <script>
+    var buttons = document.getElementsByTagName("h4");
+    var result = document.getElementById("result");
+    var sol = document.getElementById("sol");
+    var count = 0;
+
+    for (var i = 0; i < buttons.length; i++) {
+      buttons[i].onclick = getButtonValue;
+    }
+    function getButtonValue() {
+      // var btn = event.srcElement;
+      count++;
+      //清除初始值0
+      if (count == 1) {
+        result.value = "";
+      }
+      result.value += this.innerText;
+      sol.value += this.innerText;
+    }
+
+    document.getElementById("clear").onclick = doClear;
+    function doClear() {
+      result.value = 0;
+      sol.value = "";
+      count = 0;
+    }
+
+    document.getElementById("cal").onclick = doCal;
+    function doCal() {
+      // 可使用的符號: + - * / ( )
+      // var ans = eval(sol.value);
+      // result.value = ans;
+    }
 
   </script>
 </body>
