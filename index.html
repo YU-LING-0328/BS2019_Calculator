@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <link rel="icon" href="images/calculator01.png" type="image/ico" />
+  <title>簡易計算機</title>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="stylesheets/style.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div id="main-part" class="bg-light text-center">
+        <table class="table table-borderless">
+          <thead>
+            <tr>
+              <div id="top">
+                <input type="text" id="input" class="text-right h2" value="0" readonly>
+              </div>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th><button type="button" class="btn btn-secondary mx-2" id="clearAll">
+                  <h4>AC</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2" id="clear">
+                  <h4>C</h4>
+                </button></th>
+              <!-- <th><button type="button" class="btn btn-secondary mx-2" id="square">
+                  <h4>x²</h4>
+                </button></th> -->
+              <th><button type="button" class="btn btn-secondary mx-2" id="percent">
+                  <h4>%</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 Operation" id="divi">
+                  <h4>÷</h4>
+                </button></th>
+            </tr>
+            <!-- $('[type=button]')[3].lastElementChild.innerHTML -->
+            <tr>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>7</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>8</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>9</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 Operation" id="mult">
+                  <h4>×</h4>
+                </button></th>
+            </tr>
+            <tr>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>4</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>5</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>6</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 Operation" id="subt">
+                  <h4>-</h4>
+                </button></th>
+            </tr>
+            <tr>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>1</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>2</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>3</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 Operation" id="add">
+                  <h4>+</h4>
+                </button></th>
+            </tr>
+            <tr>
+              <th><button type="button" class="btn btn-secondary mx-2" id="N-Value">
+                  <h4>±</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2 num">
+                  <h4>0</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2" id="point">
+                  <h4>.</h4>
+                </button></th>
+              <th><button type="button" class="btn btn-secondary mx-2" id="cal">
+                  <h4>=</h4>
+                </button></th>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div id="note">
+        <!-- <input type="text" id="sol" class="h4" readonly> -->
+        <textarea class="form-control" id="sol" rows="3" readonly></textarea>
+      </div>
+    </div>
+  </div>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+
+  <!-- https://yuling-calculator.azurewebsites.net/calculator.html -->
+  <script>
+    var nums = document.getElementsByClassName("num");
+    var Operation = document.getElementsByClassName("Operation");
+    var input = document.getElementById("input");
+    var sol = document.getElementById("sol");
+    var count = 0;
+    var record = [];
+
+    //*取得數字*
+    for (var i = 0; i < nums.length; i++) {
+      nums[i].onclick = getNum;
+      // nums[i].onkeyup = function (event) {
+      //   if (event.keyCode == (48 + i)) {
+      //     this.onclick;
+      //   }
+      //   if (event.keyCode == (96 + i)) {
+      //     this.onclick;
+      //   }
+      // }
+    }
+    function getNum() {
+      //第一次輸入0時的判斷和不能一直輸入多個0,ex:01,0000
+      if (input.value == "0") {
+        input.value = "";
+      }
+      //清除等於後的答案，可直接輸入新的值
+      if (count >= 1) {
+        input.value = "";
+      }
+      // var btn = event.srcElement;
+      input.value += this.innerText;
+      // sol.value += this.innerText;
+    };
+
+    //*取得運算符號*
+    for (var j = 0; j < Operation.length; j++) {
+      Operation[j].onclick = doOperation;
+    }
+
+    var s = [];//分開存取數字及運算符號
+    function doOperation() {
+      if (input.value == "") {
+        if (isNaN(s[s.length - 1]) && s.length >= 2) {
+          s[s.length - 1] = this.value;
+          sol.innerText = s.join(" ");
+        }
+        return;
+      }
+      if (!isNaN(s[s.length - 1])) {
+        return;
+      }
+      // s+=input.value+this.innerText;
+      s[s.length] = input.value;
+      s[s.length] = this.innerText;
+      input.value = "";
+      sol.value = record_toString + s.join(" ");
+    };
+
+    document.getElementById("clearAll").onclick = doClearAll;
+    function doClearAll() {
+      s = [];
+      input.value = 0;
+    };
+
+    document.getElementById("clear").onclick = doClear;
+    function doClear() {
+      input.value = 0;
+    };
+
+    // document.getElementById("square").onclick = doSquare;
+    // function doSquare() {
+    //   input.value = Math.pow(parseFloat(input.value), 2);
+    //   // sol.value = input.value;
+    // };
+
+    document.getElementById("percent").onclick = doPercent;
+    function doPercent() {
+      if (isNaN(input.value)) {
+        input.value = "doPercent_Error!";
+      }
+
+      input.value = parseFloat(input.value) * 0.01;
+      // sol.value += this.innerText;
+    };
+
+    document.getElementById("N-Value").onclick = doNvalue;
+    function doNvalue() {
+      if (isNaN(input.value)) {
+        input.value = "doNvalue_Error!";
+      }
+
+      input.value = parseFloat(input.value) * -1;
+      // sol.value += this.innerText;
+    };
+
+    document.getElementById("point").onclick = doPoint;
+    function doPoint() {
+      if (input.value.indexOf(".") != -1) {
+        return;
+      }
+
+      input.value += ".";
+      // sol.value += this.innerText;
+    };
+
+    var record_toString = "";
+    document.getElementById("cal").onclick = doCal;
+    function doCal() {
+      // 可使用的符號: + - * / ( )
+      // var ans = eval(sol.value);
+      // result.value = ans;
+      if (s.length == 0) {
+        return;
+      }
+      if (isNaN(s[s.length - 1])) {
+        if (input.value == "") {
+          s.pop();
+        }
+        else {
+          s[s.length] = input.value;
+        }
+      }
+      if (isNaN(getAns(s))) {
+        input.value = "undefined"; // 0 ÷ 0 = 無意義
+        sol.innerText = "undefined";
+      }
+      else {
+        input.value = getAns(s);
+        count++;
+        for (var i = 0; i < s.length; i++) {
+          if (i > 0) {
+            s_toString = s_toString.replace(",", " ");
+          }
+          else {
+            var s_toString = s.toString().replace(",", " ");
+          }
+        }
+        sol.value = s_toString + " = " + input.value;
+
+        /*歷史紀錄*/
+        record[record.length] = sol.value + "\n";
+        for (var i = 0; i < record.length; i++) {
+          if (i > 0) {
+            record_toString = record_toString.replace(",", "");
+          }
+          else {
+            record_toString = record.toString().replace(",", "");
+          }
+        }
+        sol.value = record_toString;
+      }
+      //console.log(s);
+      s = [];
+    };
+
+    //先乘除後加減
+    function getAns(source) {
+      if (!isNaN(source)) {
+        return source;
+      }
+      if (source.indexOf("×") != -1 || source.indexOf("÷") != -1) {
+        for (var i = 0; i < source.length; i++) {
+          var result = 0;
+          var bool = false;
+          if (source[i] == "×") {
+            result = parseFloat(source[i - 1]) * parseFloat(source[i + 1]);
+            bool = true;
+          }
+          if (source[i] == "÷") {
+            result = parseFloat(source[i - 1]) / parseFloat(source[i + 1]);
+            bool = true;
+          }
+          if (bool) {
+            var new_s = [];
+            for (var j = 0; j < i - 1; j++) {
+              new_s[new_s.length] = source[j];
+            }
+            new_s[new_s.length] = result;
+            if (i + 2 <= source.length - 1) {
+              for (var j = i + 2; j < source.length; j++) {
+                new_s[new_s.length] = source[j];
+              }
+            }
+            return getAns(new_s);
+          }
+        }
+      }
+      if (source.indexOf("+") != -1 || source.indexOf("-") != -1) {
+        for (var i = 0; i < source.length; i++) {
+          var result = 0;
+          var bool = false;
+          if (source[i] == "+") {
+            result = (parseFloat(source[i - 1]) - 0) + (parseFloat(source[i + 1]) - 0);
+            bool = true;
+          }
+          if (source[i] == "-") {
+            result = (parseFloat(source[i - 1]) - 0) - (parseFloat(source[i + 1]) - 0);
+            bool = true;
+          }
+          if (bool) {
+            var new_s = [];
+            for (var j = 0; j < i - 1; j++) {
+              new_s[new_s.length] = source[j];
+            }
+            new_s[new_s.length] = result;
+            if (i + 2 <= source.length - 1) {
+              for (var j = i + 2; j < source.length; j++) {
+                new_s[new_s.length] = source[j];
+              }
+            }
+            return getAns(new_s);
+          }
+        }
+      }
+    };
+/*鍵盤輸入*/
+    document.onkeyup = function (event) {
+      if (event.key >= 0 && event.key <= 9) { //鍵盤輸入0~9
+        // input.value += event.key;
+        for(var i = 0 ; i < nums.length ; i++)
+        {
+          if(nums[i].innerText == event.key){
+            
+            return this.onclick = getNum;
+          }
+        }
+      }
+      if (event.key == "+") {
+        document.getElementById("add").click() = doOperation;
+      }
+      if (event.key == "-") {
+        document.getElementById("subt").click() = doOperation;
+      }
+      if (event.key == "*") {
+        document.getElementById("mult").click() = doOperation;
+      }
+      if (event.key == "/") {
+        document.getElementById("divi").click() = doOperation;
+      }
+      if (event.keyCode == 13) {
+        // document.getElementById("cal").click();
+        doCal();
+      }
+      if (event.keyCode == 8 || event.keyCode == 46) {
+        document.getElementById("clear").click();
+      }
+      if (event.keyCode == 53) {
+        if (event.shiftKey) {
+          // '%' handler
+          doPercent();
+        } else {
+          // '5' handler
+        }
+      }  
+      //if (event.keyCode == 110) {
+        if (event.key == ".") {
+        document.getElementById("point").click();
+      }
+      //UP
+      if(event.keyCode == 38){
+        doNvalue();
+      }
+    }
+
+  </script>
+</body>
+
+</html>
